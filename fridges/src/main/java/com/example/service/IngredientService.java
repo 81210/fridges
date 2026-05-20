@@ -5,7 +5,16 @@ import com.example.fridges.repository.IngredientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.util.List;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import org.springframework.http.ResponseEntity;
 
 @Service
 @RequiredArgsConstructor
@@ -46,5 +55,21 @@ public class IngredientService {
         ingredient.setStatus(status);
         return ingredientRepository.save(ingredient);
     }
+    public String getProductByBarcode(String barcode) throws Exception {
+    String apiKey = "3174a244477848cb89b6";
+    String serviceId = "C005";
+    String url = "http://openapi.foodsafetykorea.go.kr/api/" + apiKey + "/" + serviceId + "/json/1/1/BAR_CD=" + barcode;
+
+    HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
+    conn.setRequestMethod("GET");
+
+    BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+    StringBuilder sb = new StringBuilder();
+    String line;
+    while ((line = br.readLine()) != null) sb.append(line);
+    br.close();
+
+    return sb.toString();
+}
 
 }

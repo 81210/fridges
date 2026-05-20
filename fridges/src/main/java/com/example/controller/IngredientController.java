@@ -3,6 +3,7 @@ package com.example.fridges.controller;
 import com.example.fridges.entity.Ingredient;
 import com.example.fridges.service.IngredientService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,8 +39,15 @@ public class IngredientController {
     public void delete(@PathVariable Long id) {
         ingredientService.delete(id);
     }
+
     @PatchMapping("/{id}/status")
     public Ingredient updateStatus(@PathVariable Long id, @RequestParam String status) {
         return ingredientService.updateStatus(id, status);
-}
+    }
+
+    @GetMapping("/barcode/{barcode}")
+    public ResponseEntity<String> getByBarcode(@PathVariable String barcode) throws Exception {
+        String result = ingredientService.getProductByBarcode(barcode);
+        return ResponseEntity.ok(result);
+    }
 }
