@@ -19,7 +19,6 @@ public class IngredientService {
 
     private final IngredientRepository ingredientRepository;
 
-    // status 자동계산
     private String calculateStatus(LocalDate expiryDate) {
         if (expiryDate == null) return "여유";
         long days = ChronoUnit.DAYS.between(LocalDate.now(), expiryDate);
@@ -55,7 +54,7 @@ public class IngredientService {
         ingredient.setExpiryDate(updated.getExpiryDate());
         ingredient.setLocation(updated.getLocation());
         ingredient.setMemo(updated.getMemo());
-        ingredient.setStatus(calculateStatus(updated.getExpiryDate())); // 수동 status 무시하고 자동계산
+        ingredient.setStatus(calculateStatus(updated.getExpiryDate()));
         return ingredientRepository.save(ingredient);
     }
 
